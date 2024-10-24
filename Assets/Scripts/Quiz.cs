@@ -6,21 +6,44 @@ using UnityEngine.UI;
 
 public class Quiz : MonoBehaviour
 {
+    [Header("Questions")]
     [SerializeField] TextMeshProUGUI questionText;
     [SerializeField] QuestionSO question;
+
+    [Header("Answers")]
     [SerializeField] GameObject[] answerButtons;
-    int correctAnswerIndex;
+    bool hasAnsweredEarly;
+
+    [Header("Buttons")]
     [SerializeField] Sprite defaultAnswerSprite;
     [SerializeField] Sprite correctAnswerSprite;
+
+    [Header("Timer")]
+    [SerializeField] Image timerImage;
+    Timer timer;
     void Start()
     {
-        DisplayQuestion();
+        //DisplayQuestion();
+        timer = FindObjectOfType<Timer>();
+        GetNextQuestion();
+    }
+
+    void Update()
+    {
+        timerImage.fillAmount = timer.fillFraction;
+        if(timer.loadNextQuestion) {
+            hasAnsweredEarly = false;
+            GetNextQuestion();
+            timer.loadNextQuestion = false;
+        } else if(!hasAnsweredEarly && !timer.isAnswering) {
+            DisplayAnswer(-1);
+            SetButtonState(false);
+        }
     }
     
     void DisplayQuestion()
     {
         questionText.text = question.GetQuestion();
-
         for(int i = 0; i < answerButtons.Length; i++) {
             TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
             buttonText.text = question.GetAnswers(i);
@@ -36,6 +59,14 @@ public class Quiz : MonoBehaviour
 
     public void OnAnswerSelected(int index)
     {
+        hasAnsweredEarly = true;
+        DisplayAnswer(index);
+        SetButtonState(false);
+        timer.CancelTimer();
+    }
+
+    void DisplayAnswer(int index) 
+    {
         Image buttonImage;
         if(index == question.GetCorrectAnswerIndex())
         {
@@ -49,7 +80,6 @@ public class Quiz : MonoBehaviour
             buttonImage = answerButtons[question.GetCorrectAnswerIndex()].GetComponent<Image>();
             buttonImage.sprite = correctAnswerSprite;
         }
-        SetButtonState(false);
     }
 
     void SetButtonState(bool state)
