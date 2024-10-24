@@ -31,11 +31,14 @@ public class Quiz : MonoBehaviour
     void Update()
     {
         timerImage.fillAmount = timer.fillFraction;
-        if(timer.loadNextQuestion) {
+        if(timer.loadNextQuestion) 
+        {
             hasAnsweredEarly = false;
             GetNextQuestion();
             timer.loadNextQuestion = false;
-        } else if(!hasAnsweredEarly && !timer.isAnswering) {
+        } 
+        else if(!hasAnsweredEarly && !timer.isAnswering) 
+        {
             DisplayAnswer(-1);
             SetButtonState(false);
         }
@@ -44,7 +47,8 @@ public class Quiz : MonoBehaviour
     void DisplayQuestion()
     {
         questionText.text = question.GetQuestion();
-        for(int i = 0; i < answerButtons.Length; i++) {
+        for(int i = 0; i < answerButtons.Length; i++) 
+        {
             TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
             buttonText.text = question.GetAnswers(i);
         }
@@ -84,7 +88,8 @@ public class Quiz : MonoBehaviour
 
     void SetButtonState(bool state)
     {
-        for(int i = 0; i < answerButtons.Length; i++) {
+        for(int i = 0; i < answerButtons.Length; i++) 
+        {
             Button button = answerButtons[i].GetComponent<Button>();
             button.interactable = state;
         }
@@ -92,9 +97,9 @@ public class Quiz : MonoBehaviour
 
     void SetDefaultButtonSprites() 
     {
-        Image buttonImage;
-        for(int i = 0; i < answerButtons.Length; i++) {
-            buttonImage = answerButtons[i].GetComponent<Image>();
+        for(int i = 0; i < answerButtons.Length; i++) 
+        {
+            Image buttonImage = answerButtons[i].GetComponent<Image>();
             buttonImage.sprite = defaultAnswerSprite;
         }
     }
