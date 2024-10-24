@@ -13,3 +13,9 @@ MonoBehaviour:
   m_Name: Question 1
   m_EditorClassIdentifier: 
   question: What is the name of the main character from the Dead Space Series?
+  answers:
+  - string name = "Isaac Clark";
+  - string name = "Justin Nemoy";
+  - string name = "David Blanche";
+  - string name = "Troy Dennisson";
+  correctAnswerIndex: 0
